@@ -100,7 +100,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-s
 
 /* Hero Left */
 .h-eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:rgba(123,104,238,.1);border:1px solid rgba(123,104,238,.25);border-radius:100px;padding:.3rem .85rem;font-family:var(--fm);font-size:.65rem;color:var(--vl);letter-spacing:.08em;margin-bottom:1.75rem}
-.h-title{font-family:var(--fd);font-weight:800;font-size:clamp(2.6rem,6.5vw,3.5rem);line-height:.95;letter-spacing:-.04em;color:var(--text);margin-bottom:1.5rem}
+.h-title{font-family:var(--fd);font-weight:800;font-size:clamp(2rem,6.5vw,3.5rem);line-height:1;letter-spacing:-.04em;color:var(--text);margin-bottom:1.5rem}
 .h-title .hi{background:linear-gradient(110deg,#A78BFA 0%,#60A5FA 50%,#34D399 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .h-sub{font-size:clamp(.95rem,1.5vw,1.1rem);color:var(--muted);line-height:1.85;max-width:520px;margin-bottom:2.25rem;font-weight:400}
 .h-sub strong{color:var(--text);font-weight:600}
@@ -155,7 +155,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-s
 .proof-card{position:absolute;z-index:3;background:rgba(14,14,24,.92);backdrop-filter:blur(20px);border:1px solid var(--bhi);border-radius:12px;padding:.7rem 1rem;box-shadow:0 12px 40px rgba(0,0,0,.5)}
 .pc-tl{top:-16px;left:-20px}
 .pc-br{bottom:60px;right:-20px}
-.pc-bl{bottom:-16px;left:10px}
+.pc-bl{bottom:-42px;left:10px}
 .pfl{font-size:.58rem;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;font-family:var(--fm);margin-bottom:.25rem}
 .pfv{font-family:var(--fd);font-weight:700;font-size:.88rem;color:var(--text);display:flex;align-items:center;gap:.35rem}
 .pfv i{font-size:.8rem}
@@ -327,7 +327,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-s
 .wt-head .wt-title{flex:1}
 .wt-head .wt-client{width:120px;display:none}
 @media(min-width:576px){.wt-head .wt-client{display:block}}
-.wt-head .wt-val{width:80px;text-align:right}
+.wt-head .wt-val{width:200px;text-align:right}
 .w-row{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.5rem;border-bottom:1px solid var(--border);transition:background .18s;cursor:default}
 .w-row:last-child{border-bottom:none}
 .w-row:hover{background:rgba(123,104,238,.04)}
@@ -335,7 +335,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-s
 .wcat{width:110px;flex-shrink:0}
 .wcat-badge{display:inline-block;font-family:var(--fm);font-size:.62rem;color:var(--v);background:rgba(123,104,238,.1);border:1px solid rgba(123,104,238,.2);padding:.18rem .55rem;border-radius:5px;letter-spacing:.04em;white-space:nowrap}
 .wtitle{flex:1;font-size:.9rem;color:var(--text);font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.wclient{font-size:.78rem;color:var(--dim);width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:none}
+.wclient{font-size:.78rem;color:var(--dim);width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 @media(min-width:576px){.wclient{display:block}}
 .wval{font-family:var(--fm);font-size:.78rem;color:var(--t);width:200px;text-align:right;white-space:nowrap}
 .w-more-row{background:rgba(123,104,238,.03);border-top:1px solid var(--border)}
@@ -473,3 +473,84 @@ footer{border-top:1px solid var(--border);padding:2.5rem 0;background:var(--bg)}
 .rv{opacity:0;transform:translateY(24px);transition:opacity .65s var(--ease),transform .65s var(--ease)}
 .rv.in{opacity:1;transform:none}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+/* ========================================================
+   MOBILE-ONLY FIXES (Leaves Desktop 100% Untouched)
+   ======================================================== */
+@media screen and (max-width: 768px) {
+  
+  /* 1. Scales down the Hero Text so it fits the viewport natively */
+  .photo-side {
+    padding: 0 1.2rem ;
+  }
+
+  /* 2. Stacks the buttons cleanly without breaking your desktop flex */
+  .hero-ctas {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100%;
+  }
+  .hero-ctas > a, 
+  .hero-ctas > .btn {
+    width: 100% !important;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .wt-head {
+      display: none;
+   }
+
+   .w-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      padding: 20px 16px;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      align-items: flex-start;
+   }
+
+   .w-row:hover {
+      background: var(--row-hover);
+   }
+
+   .wn {
+      font-size: .7rem;
+      order: 0;
+      padding-top: .35rem;
+   }
+
+   .wcat {
+      order: 0;
+   }
+
+   .wcat-badge {
+      font-size: .6rem;
+      padding: 3px 8px;
+   }
+
+   .wtitle {
+      order: 1;
+      flex: 1 1 100%;
+      font-size: .85rem;
+      margin-top: 4px;
+      line-height: 1.45;
+   }
+
+   .wclient {
+      order: 2;
+      font-size: .75rem;
+      white-space: normal;
+   }
+
+   .wval {
+      order: 2;
+      font-size: .75rem;
+      margin-left: auto;
+   }
+
+   .w-more-row .wtitle {
+      flex: 1 1 100%;
+   }
+}
