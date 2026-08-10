@@ -136,12 +136,60 @@
 
   <footer class="footer"><div class="wrap footer-row"><span>© 2026 Raj Kumar Das · WhatsApp AI & Business Automation</span><span><a href="mailto:hello.rajkdas@gmail.com">hello.rajkdas@gmail.com</a> · <a href="https://www.linkedin.com/in/full-stack-developer-agentic-ai" target="_blank" rel="noopener">LinkedIn</a></span></div></footer>
   <script>
-    document.getElementById('briefForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const f = new FormData(this);
-      const body = `Name: ${f.get('name')}\nCompany / website: ${f.get('company')}\nEmail: ${f.get('email')}\nMain system: ${f.get('system')}\n\nDesired workflow:\n${f.get('details')}`;
-      window.location.href = 'mailto:hello.rajkdas@gmail.com?subject=' + encodeURIComponent('WhatsApp Automation Brief — ' + f.get('company')) + '&body=' + encodeURIComponent(body);
-    });
-  </script>
+(function () {
+  const endpoint = "https://script.google.com/macros/s/AKfycbzAkdVq5ZnqZOgvVSY4gPhXT9-32P6QrsZkTgNd-Oi0agVsLyEVUybUn4VAxrnWRAeu/exec";
+  const form = document.getElementById('briefForm');
+  if (!form) return;
+
+  const sourcePage = 'WhatsApp AI & Business Automation Service';
+  const submitButton = form.querySelector('button[type="submit"]');
+  const originalButtonText = submitButton ? submitButton.innerHTML : 'Send project brief →';
+
+  const status = document.createElement('div');
+  status.setAttribute('role', 'status');
+  status.style.cssText = 'display:none;margin-top:14px;padding:12px 14px;border:1px solid rgba(36,211,102,.38);background:rgba(36,211,102,.09);color:#bdf5d1;border-radius:8px;font-size:13px;font-weight:600;';
+  form.appendChild(status);
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const data = new FormData(form);
+    data.set('page', sourcePage);
+    data.set('service', data.get('type') || data.get('platform') || data.get('system') || sourcePage);
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.style.opacity = '.7';
+      submitButton.innerHTML = 'Sending your brief…';
+    }
+    status.style.display = 'none';
+
+    fetch(endpoint, { method: 'POST', mode: 'no-cors', body: data })
+      .then(function () {
+        form.reset();
+        status.style.borderColor = 'rgba(36,211,102,.38)';
+        status.style.background = 'rgba(36,211,102,.09)';
+        status.style.color = '#bdf5d1';
+        status.textContent = 'Thank you — your project brief has been received. I will personally review it and reply within one business day.';
+        status.style.display = 'block';
+      })
+      .catch(function () {
+        status.style.borderColor = 'rgba(255,140,140,.45)';
+        status.style.background = 'rgba(255,80,80,.08)';
+        status.style.color = '#ffd0d0';
+        status.textContent = 'Unable to submit your brief right now. Please email hello.rajkdas@gmail.com directly.';
+        status.style.display = 'block';
+      })
+      .finally(function () {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.style.opacity = '1';
+          submitButton.innerHTML = originalButtonText;
+        }
+      });
+  });
+})();
+</script>
 </body>
 </html>

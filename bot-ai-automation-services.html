@@ -29,6 +29,61 @@
 <section class="cta" id="brief"><div class="wrap"><span class="section-label">Free first step</span><h2 class="h2">Find the best bot opportunity in your business.</h2><p class="intro">Tell me the repeated customer or team task you want to improve. I will reply within one business day with a practical first workflow, the likely best platform and an honest view of whether a custom bot is the right investment.</p><form class="form-box" id="briefForm"><div class="fields"><div class="field"><label for="name">Your name</label><input required id="name" name="name" placeholder="Name"></div><div class="field"><label for="company">Company / product URL</label><input required id="company" name="company" placeholder="Company name or URL"></div><div class="field"><label for="email">Work email</label><input required type="email" id="email" name="email" placeholder="you@company.com"></div><div class="field"><label for="platform">Preferred platform</label><select id="platform" name="platform"><option>Not sure — help me choose</option><option>Telegram</option><option>Slack</option><option>WhatsApp</option><option>Discord</option><option>Web chat / multi-platform</option></select></div><div class="field full"><label for="details">What should users or your team be able to check, receive or do?</label><textarea required id="details" name="details" placeholder="Example: when a customer asks for an order update, verify the account, retrieve live status, create a support ticket when needed and alert the team in Slack."></textarea></div></div><button class="button primary" type="submit" style="margin-top:16px">Send my automation brief →</button><p class="form-note">This opens your email application with the completed brief addressed to <strong>hello.rajkdas@gmail.com</strong>. Prefer a call? <a href="https://calendly.com/rajkdas/30min" target="_blank" rel="noopener">Book here</a>.</p></form></div></section>
 </main>
 <footer class="footer"><div class="wrap footer-row"><span>© 2026 Raj Kumar Das · Bots, AI Agents & Automation</span><span><a href="mailto:hello.rajkdas@gmail.com">hello.rajkdas@gmail.com</a> · <a href="https://www.linkedin.com/in/full-stack-developer-agentic-ai" target="_blank" rel="noopener">LinkedIn</a></span></div></footer>
-<script>document.getElementById('briefForm').addEventListener('submit',function(e){e.preventDefault();const f=new FormData(this);const body=`Name: ${f.get('name')}\nCompany / product URL: ${f.get('company')}\nEmail: ${f.get('email')}\nPreferred platform: ${f.get('platform')}\n\nDesired bot / automation outcome:\n${f.get('details')}`;window.location.href='mailto:hello.rajkdas@gmail.com?subject='+encodeURIComponent('Bot & AI Automation Brief — '+f.get('company'))+'&body='+encodeURIComponent(body);});</script>
+<script>
+(function () {
+  const endpoint = "https://script.google.com/macros/s/AKfycbzAkdVq5ZnqZOgvVSY4gPhXT9-32P6QrsZkTgNd-Oi0agVsLyEVUybUn4VAxrnWRAeu/exec";
+  const form = document.getElementById('briefForm');
+  if (!form) return;
+
+  const sourcePage = 'Bots, AI Agents & Automation Hub';
+  const submitButton = form.querySelector('button[type="submit"]');
+  const originalButtonText = submitButton ? submitButton.innerHTML : 'Send project brief →';
+
+  const status = document.createElement('div');
+  status.setAttribute('role', 'status');
+  status.style.cssText = 'display:none;margin-top:14px;padding:12px 14px;border:1px solid rgba(36,211,102,.38);background:rgba(36,211,102,.09);color:#bdf5d1;border-radius:8px;font-size:13px;font-weight:600;';
+  form.appendChild(status);
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const data = new FormData(form);
+    data.set('page', sourcePage);
+    data.set('service', data.get('type') || data.get('platform') || data.get('system') || sourcePage);
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.style.opacity = '.7';
+      submitButton.innerHTML = 'Sending your brief…';
+    }
+    status.style.display = 'none';
+
+    fetch(endpoint, { method: 'POST', mode: 'no-cors', body: data })
+      .then(function () {
+        form.reset();
+        status.style.borderColor = 'rgba(36,211,102,.38)';
+        status.style.background = 'rgba(36,211,102,.09)';
+        status.style.color = '#bdf5d1';
+        status.textContent = 'Thank you — your project brief has been received. I will personally review it and reply within one business day.';
+        status.style.display = 'block';
+      })
+      .catch(function () {
+        status.style.borderColor = 'rgba(255,140,140,.45)';
+        status.style.background = 'rgba(255,80,80,.08)';
+        status.style.color = '#ffd0d0';
+        status.textContent = 'Unable to submit your brief right now. Please email hello.rajkdas@gmail.com directly.';
+        status.style.display = 'block';
+      })
+      .finally(function () {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.style.opacity = '1';
+          submitButton.innerHTML = originalButtonText;
+        }
+      });
+  });
+})();
+</script>
 </body>
 </html>
