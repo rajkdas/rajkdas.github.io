@@ -811,5 +811,103 @@ mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classLi
   document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 })();
 </script>
+<!-- HOMEPAGE LEAD POPUP -->
+<style>
+  #homepageLeadModal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(3,4,10,.78);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+  #homepageLeadModal.open{display:flex}
+  #homepageLeadModal .hlm-card{width:min(650px,100%);max-height:min(760px,calc(100vh - 36px));overflow:auto;position:relative;border:1px solid rgba(123,104,238,.4);border-radius:16px;padding:clamp(1.4rem,4vw,2.25rem);background:linear-gradient(145deg,#17152a,#0b0c15);box-shadow:0 28px 100px rgba(0,0,0,.6)}
+  #homepageLeadModal .hlm-close{position:absolute;right:15px;top:13px;width:37px;height:37px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(255,255,255,.04);color:var(--text);font-size:23px;line-height:1;cursor:pointer}
+  #homepageLeadModal .hlm-eyebrow{font-family:var(--fm);font-size:.7rem;letter-spacing:.1em;color:var(--vl);margin-bottom:.7rem}
+  #homepageLeadModal h2{font-family:var(--fd);font-size:clamp(1.65rem,4vw,2.25rem);letter-spacing:-.045em;line-height:1.1;margin:0;max-width:510px}
+  #homepageLeadModal .hlm-sub{color:var(--muted);font-size:.91rem;margin:1rem 0 1.5rem;max-width:540px}
+  #homepageLeadModal .hlm-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+  #homepageLeadModal .hlm-field{display:grid;gap:6px}
+  #homepageLeadModal .hlm-full{grid-column:1/-1}
+  #homepageLeadModal label{font-size:.76rem;color:#c6c2d3;font-weight:700}
+  #homepageLeadModal input,#homepageLeadModal select,#homepageLeadModal textarea{width:100%;border:1px solid rgba(255,255,255,.13);border-radius:8px;background:#080911;color:var(--text);font:inherit;font-size:.87rem;padding:11px 12px;outline:none}
+  #homepageLeadModal textarea{min-height:100px;resize:vertical}
+  #homepageLeadModal input:focus,#homepageLeadModal select:focus,#homepageLeadModal textarea:focus{border-color:var(--v);box-shadow:0 0 0 3px rgba(123,104,238,.13)}
+  #homepageLeadModal .hlm-submit{margin-top:16px;width:100%;justify-content:center;cursor:pointer}
+  #homepageLeadModal .hlm-submit:disabled{opacity:.65;cursor:wait}
+  #homepageLeadStatus{display:none;margin-top:13px;padding:11px 13px;border-radius:8px;font-size:.82rem;font-weight:600}
+  #homepageLeadModal .hlm-note{color:var(--dim);font-size:.72rem;margin:11px 0 0;text-align:center}
+  @media(max-width:560px){#homepageLeadModal .hlm-grid{grid-template-columns:1fr}#homepageLeadModal .hlm-full{grid-column:auto}#homepageLeadModal .hlm-card{padding:1.35rem}#homepageLeadModal h2{padding-right:34px}}
+</style>
+
+<div id="homepageLeadModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="homepageLeadTitle">
+  <div class="hlm-card">
+    <button class="hlm-close" type="button" aria-label="Close form">×</button>
+    <div class="hlm-eyebrow">PROJECT ENQUIRY</div>
+    <h2 id="homepageLeadTitle">Tell me what you need to build.</h2>
+    <p class="hlm-sub">Share the essential details. I personally review every enquiry and reply within one business day.</p>
+    <form id="homepageLeadForm">
+      <div class="hlm-grid">
+        <div class="hlm-field"><label for="hlm-name">Your name</label><input id="hlm-name" name="name" required placeholder="Name"></div>
+        <div class="hlm-field"><label for="hlm-company">Company / website</label><input id="hlm-company" name="company" required placeholder="Company or URL"></div>
+        <div class="hlm-field"><label for="hlm-email">Work email</label><input id="hlm-email" type="email" name="email" required placeholder="you@company.com"></div>
+        <div class="hlm-field"><label for="hlm-service">Primary need</label><select id="hlm-service" name="service"><option>Custom bot, AI agent or automation</option><option>Telegram bot</option><option>Slack bot / workflow</option><option>WhatsApp business automation</option><option>WordPress / WooCommerce development</option><option>API / full-stack development</option><option>Other / not sure yet</option></select></div>
+        <div class="hlm-field hlm-full"><label for="hlm-details">What result do you need?</label><textarea id="hlm-details" name="details" required placeholder="Describe the business problem, users, systems to connect and desired outcome."></textarea></div>
+      </div>
+      <input type="hidden" name="page" value="Portfolio Homepage">
+      <button type="submit" class="b-main hlm-submit">Send project brief <i class="bi bi-arrow-right"></i></button>
+      <div id="homepageLeadStatus" role="status"></div>
+      <p class="hlm-note">Your details are used only to respond to this project enquiry.</p>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+  const endpoint = "https://script.google.com/macros/s/AKfycbzAkdVq5ZnqZOgvVSY4gPhXT9-32P6QrsZkTgNd-Oi0agVsLyEVUybUn4VAxrnWRAeu/exec";
+  const modal = document.getElementById('homepageLeadModal');
+  const form = document.getElementById('homepageLeadForm');
+  const close = modal.querySelector('.hlm-close');
+  const status = document.getElementById('homepageLeadStatus');
+  const submit = form.querySelector('button[type="submit"]');
+  const originalText = submit.innerHTML;
+
+  function openModal(event){
+    if(event) event.preventDefault();
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    setTimeout(function(){document.getElementById('hlm-name').focus()},100);
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+
+  document.querySelectorAll('a.btn-hire, a.btn-cta, a.mhire').forEach(function(button){
+    button.addEventListener('click', openModal);
+  });
+  close.addEventListener('click', closeModal);
+  modal.addEventListener('click', function(event){if(event.target === modal) closeModal();});
+  document.addEventListener('keydown', function(event){if(event.key === 'Escape' && modal.classList.contains('open')) closeModal();});
+
+  form.addEventListener('submit', function(event){
+    event.preventDefault();
+    if(!form.reportValidity()) return;
+    const data = new FormData(form);
+    data.set('service', data.get('service') || 'Portfolio homepage enquiry');
+    submit.disabled = true;
+    submit.innerHTML = 'Sending your brief…';
+    status.style.display = 'none';
+
+    fetch(endpoint,{method:'POST',mode:'no-cors',body:data})
+      .then(function(){
+        form.reset();
+        status.style.cssText='display:block;background:rgba(0,194,160,.10);border:1px solid rgba(0,194,160,.32);color:#9df0dc;margin-top:13px;padding:11px 13px;border-radius:8px;font-size:.82rem;font-weight:600';
+        status.textContent='Thank you — your project brief has been received. I will reply within one business day.';
+      })
+      .catch(function(){
+        status.style.cssText='display:block;background:rgba(255,80,80,.08);border:1px solid rgba(255,140,140,.35);color:#ffd0d0;margin-top:13px;padding:11px 13px;border-radius:8px;font-size:.82rem;font-weight:600';
+        status.textContent='Unable to submit right now. Please email hello.rajkdas@gmail.com directly.';
+      })
+      .finally(function(){submit.disabled=false;submit.innerHTML=originalText;});
+  });
+})();
+</script>
 </body>
 </html>
