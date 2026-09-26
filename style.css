@@ -146,7 +146,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-font-s
 
 .photo-card{position:relative;z-index:1;border-radius:24px;overflow:hidden;border:1px solid var(--bhi);box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04);background:var(--s1)}
 .photo-card img{width:100%;display:block;aspect-ratio:1/1;object-fit:cover;object-position:center top}
-.photo-overlay{position:absolute;bottom:0;left:0;right:0;height:55%;background:linear-gradient(to top,rgba(6,6,9,.98) 0%,rgba(6,6,9,.5) 60%,transparent 100%);pointer-events:none}
+.photo-overlay{position:absolute;bottom:0;left:0;right:0;height:20%;background:linear-gradient(to top,rgba(6,6,9,.98) 0%,rgba(6,6,9,.5) 60%,transparent 100%);pointer-events:none}
 .photo-name-block{position:absolute;bottom:1.5rem;left:1.5rem;right:1.5rem;z-index:2}
 .photo-name{font-family:var(--fd);font-weight:800;font-size:1.05rem;letter-spacing:-.02em;color:#fff}
 .photo-role{font-size:.7rem;color:rgba(255,255,255,.5);font-family:var(--fm);margin-top:3px;letter-spacing:.04em}
